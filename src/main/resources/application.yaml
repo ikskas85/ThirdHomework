@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ASTON
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+  jpa:
+    show-sql: on
+logging:
+  level:
+    root: warn
