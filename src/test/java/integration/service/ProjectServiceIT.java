@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import spring.dto.CompanyDto;
+import org.springframework.transaction.annotation.Transactional;
 import spring.dto.ProjectDto;
 import spring.service.ProjectService;
 
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectServiceIT extends IntegrationTestBase {
     private final ProjectService projectService;
     private ProjectDto projectDto;
-    private Integer countOfEntities = 10;
+    private final Integer countOfEntities = 10;
 
 
     @BeforeEach
@@ -41,6 +41,7 @@ class ProjectServiceIT extends IntegrationTestBase {
         maybeProject.ifPresent(company -> assertEquals(LocalDate.of(2021, 4, 6), company.date()));
     }
 
+    @Transactional
     @Test
     void create() {
         int size = projectService.readAll().size();
@@ -48,6 +49,7 @@ class ProjectServiceIT extends IntegrationTestBase {
         assertTrue(projectService.readAll().size() > size);
     }
 
+    @Transactional
     @Test
     void update() {
         projectService.save(projectDto);
@@ -60,6 +62,7 @@ class ProjectServiceIT extends IntegrationTestBase {
                 projectService.readByName(projectDto.name()).get().date().toString());
     }
 
+    @Transactional
     @Test
     void delete() {
         projectService.save(projectDto);

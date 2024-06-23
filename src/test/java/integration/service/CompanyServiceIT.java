@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import spring.dto.CompanyDto;
 import spring.service.CompanyService;
 
@@ -38,6 +39,7 @@ class CompanyServiceIT extends IntegrationTestBase {
         maybeUser.ifPresent(company -> assertEquals("Amazon", company.name()));
     }
 
+    @Transactional
     @Test
     void create() {
         int size = companyService.readAll().size();
@@ -45,6 +47,7 @@ class CompanyServiceIT extends IntegrationTestBase {
         assertTrue(companyService.readAll().size() > size);
     }
 
+    @Transactional
     @Test
     void update() {
         companyService.save(testDto);
@@ -52,6 +55,7 @@ class CompanyServiceIT extends IntegrationTestBase {
         assertEquals("newName", companyService.readById(testDto.id()).get().name());
     }
 
+    @Transactional
     @Test
     void delete() {
         companyService.save(testDto);

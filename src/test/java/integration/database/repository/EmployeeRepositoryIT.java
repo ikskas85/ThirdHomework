@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmployeeRepositoryIT extends IntegrationTestBase {
     @Autowired
     private final EmployeeRepository employeeRepository;
-    private Integer first_id = 0;
-    private Integer second_id = 1;
+    private final Integer FIRST_ID = 0;
+    private final Integer SECOND_ID = 1;
     Employee employee;
     Employee secondEmployee;
 
@@ -36,7 +36,7 @@ class EmployeeRepositoryIT extends IntegrationTestBase {
                 .role("Developer")
                 .email("first@mail.ru")
                 .company(new Company(
-                        first_id,
+                        FIRST_ID,
                         "Google",
                         null))
                 .build();
@@ -47,12 +47,13 @@ class EmployeeRepositoryIT extends IntegrationTestBase {
                 .role("Developer")
                 .email("second@mail.ru")
                 .company(new Company(
-                        second_id,
+                        SECOND_ID,
                         "Amazon",
                         null))
                 .build();
     }
 
+    @Transactional
     @Test
     void create() {
         AtomicLong count = new AtomicLong(employeeRepository.findAll().size());
@@ -66,12 +67,14 @@ class EmployeeRepositoryIT extends IntegrationTestBase {
         assertTrue(someEmployee.isPresent());
     }
 
+    @Transactional
     @Test
     void update() {
         employeeRepository.saveAndFlush(secondEmployee);
         assertEquals(secondEmployee.getFirstName(), employeeRepository.findById(secondEmployee.getId()).get().getFirstName());
     }
 
+    @Transactional
     @Test
     void delete() {
         employeeRepository.saveAndFlush(secondEmployee);

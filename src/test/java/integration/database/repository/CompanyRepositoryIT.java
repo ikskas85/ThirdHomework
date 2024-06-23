@@ -1,10 +1,7 @@
 package integration.database.repository;
 
 import integration.IntegrationTestBase;
-import integration.annotation.IT;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +11,13 @@ import spring.repository.CompanyRepository;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class CompanyRepositoryIT extends IntegrationTestBase {
 
-    private Integer testId = 21;
+    private final Integer TEST_ID = 21;
     private final CompanyRepository companyRepository;
     Company company;
     Company secondCompany;
@@ -30,14 +26,15 @@ class CompanyRepositoryIT extends IntegrationTestBase {
     void setUp() {
         company = Company.builder()
                 .companyName("Test")
-                .id(testId)
+                .id(TEST_ID)
                 .build();
         secondCompany = Company.builder()
                 .companyName("newTest")
-                .id(testId)
+                .id(TEST_ID)
                 .build();
     }
 
+    @Transactional
     @Test
     void create() {
         AtomicLong count = new AtomicLong(companyRepository.findAll().size());
@@ -46,16 +43,20 @@ class CompanyRepositoryIT extends IntegrationTestBase {
     }
 
     @Test
+    @Transactional
     void findById() {
-        assertNotNull(companyRepository.findById(testId));
+        companyRepository.saveAndFlush(company);
+        assertTrue(companyRepository.findById(TEST_ID).isPresent());
     }
 
+    @Transactional
     @Test
     void update() {
         companyRepository.saveAndFlush(secondCompany);
         assertNotNull(companyRepository.findById(secondCompany.getId()));
     }
 
+    @Transactional
     @Test
     void delete() {
         companyRepository.saveAndFlush(secondCompany);

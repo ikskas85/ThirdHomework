@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import spring.entities.Project;
 import spring.repository.ProjectRepository;
 
@@ -24,6 +25,7 @@ class ProjectRepositoryIT extends IntegrationTestBase {
         project = Project.builder().name("Test Project").startDate(LocalDate.of(2000, 1, 1)).build();
     }
 
+    @Transactional
     @Test
     void create() {
         AtomicLong counter = new AtomicLong(projectRepository.findAll().size());
@@ -36,12 +38,14 @@ class ProjectRepositoryIT extends IntegrationTestBase {
         assertNotNull(projectRepository.findById("Test Project"));
     }
 
+    @Transactional
     @Test
     void update() {
         projectRepository.save(project);
         assertNotNull(projectRepository.findById("Test Project"));
     }
 
+    @Transactional
     @Test
     void delete() {
         projectRepository.save(project);

@@ -1,7 +1,7 @@
 create table companies
 (
-    company_name text,
-        id         integer not null
+    company_name text not null,
+        id         integer
         constraint companies_pk
             primary key
 );

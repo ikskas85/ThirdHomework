@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @ActiveProfiles("test")
-@Transactional
+@Transactional(readOnly = true)
 @SpringBootTest(classes = ApplicationRunner.class)
 public @interface IT {
 }
