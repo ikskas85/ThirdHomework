@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import spring.entities.Company;
 import spring.repository.CompanyRepository;
 
@@ -34,7 +33,6 @@ class CompanyRepositoryIT extends IntegrationTestBase {
                 .build();
     }
 
-    @Transactional
     @Test
     void create() {
         AtomicLong count = new AtomicLong(companyRepository.findAll().size());
@@ -43,20 +41,17 @@ class CompanyRepositoryIT extends IntegrationTestBase {
     }
 
     @Test
-    @Transactional
     void findById() {
         companyRepository.saveAndFlush(company);
         assertTrue(companyRepository.findById(TEST_ID).isPresent());
     }
 
-    @Transactional
     @Test
     void update() {
         companyRepository.saveAndFlush(secondCompany);
         assertNotNull(companyRepository.findById(secondCompany.getId()));
     }
 
-    @Transactional
     @Test
     void delete() {
         companyRepository.saveAndFlush(secondCompany);

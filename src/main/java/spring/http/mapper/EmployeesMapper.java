@@ -32,7 +32,7 @@ public interface EmployeesMapper {
 
 
     static Employee mappedDtoToEmployee(EmployeeDto employeeDto) {
-        var company = Company.builder()
+        Company company = Company.builder()
                 .id(employeeDto.companyId())
                 .build();
         return Employee.builder()

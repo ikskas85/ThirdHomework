@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import spring.entities.Company;
 import spring.entities.Employee;
 import spring.repository.EmployeeRepository;
@@ -17,7 +16,6 @@ import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class EmployeeRepositoryIT extends IntegrationTestBase {
     @Autowired
@@ -53,7 +51,6 @@ class EmployeeRepositoryIT extends IntegrationTestBase {
                 .build();
     }
 
-    @Transactional
     @Test
     void create() {
         AtomicLong count = new AtomicLong(employeeRepository.findAll().size());
@@ -67,14 +64,12 @@ class EmployeeRepositoryIT extends IntegrationTestBase {
         assertTrue(someEmployee.isPresent());
     }
 
-    @Transactional
     @Test
     void update() {
         employeeRepository.saveAndFlush(secondEmployee);
         assertEquals(secondEmployee.getFirstName(), employeeRepository.findById(secondEmployee.getId()).get().getFirstName());
     }
 
-    @Transactional
     @Test
     void delete() {
         employeeRepository.saveAndFlush(secondEmployee);

@@ -1,6 +1,6 @@
 create table companies
 (
-    company_name text not null,
+    company_name text ,
         id         integer
         constraint companies_pk
             primary key

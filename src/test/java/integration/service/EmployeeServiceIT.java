@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import spring.dto.EmployeeDto;
 import spring.service.EmployeeService;
 
@@ -47,7 +46,6 @@ class EmployeeServiceIT extends IntegrationTestBase {
         maybeEmployee.ifPresent(employee -> assertEquals("Ives", employee.firstName()));
     }
 
-    @Transactional
     @Test
     void create() {
         int size = employeeService.readAll().size();
@@ -55,7 +53,6 @@ class EmployeeServiceIT extends IntegrationTestBase {
         assertTrue(employeeService.readAll().size() > size);
     }
 
-    @Transactional
     @Test
     void update() {
         employeeService.save(employeeDto);
@@ -63,7 +60,6 @@ class EmployeeServiceIT extends IntegrationTestBase {
         assertEquals("Alex", employeeService.readById(employeeDto.id()).get().firstName());
     }
 
-    @Transactional
     @Test
     void delete() {
         employeeService.save(employeeDto);

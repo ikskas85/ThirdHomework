@@ -1,6 +1,7 @@
 package spring.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,7 +55,7 @@ public class CompanyController {
         if (!companyService.deleteById(id)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:companies/" + id);
+        modelAndView.setViewName("redirect:/companies/" + id);
         return modelAndView;
     }
 }
