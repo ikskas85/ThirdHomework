@@ -40,7 +40,7 @@ class CompanyControllerTest extends IntegrationTestBase {
 
     @Test
     void update() throws Exception {
-        mockMvc.perform(put("/companies")
+        mockMvc.perform(post("/companies")
                 .param("id", "20")
                 .param("name", "TestingName"));
         mockMvc.perform(put("/companies")

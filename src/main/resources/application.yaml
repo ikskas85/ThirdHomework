@@ -11,6 +11,8 @@ spring:
     view:
       suffix: src/main/resources/templates
       prefix: .jsp
+    format:
+      date: iso
 logging:
   level:
     root: warn

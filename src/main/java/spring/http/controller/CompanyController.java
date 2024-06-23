@@ -55,7 +55,7 @@ public class CompanyController {
         if (!companyService.deleteById(id)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:/companies/" + id);
+        modelAndView.setViewName("redirect:/companies");
         return modelAndView;
     }
 }

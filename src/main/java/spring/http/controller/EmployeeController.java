@@ -58,7 +58,7 @@ public class EmployeeController {
         if (!employeeService.deleteById(uuid)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:/employees/" + uuid);
+        modelAndView.setViewName("redirect:/employees");
         return modelAndView;
     }
 }

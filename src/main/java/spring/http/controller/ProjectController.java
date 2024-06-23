@@ -43,7 +43,7 @@ public class ProjectController {
     public ModelAndView update(ProjectDto projectDto,
                                ModelAndView model) {
         projectService.update(projectDto);
-        model.setViewName("redirect:/companies/" + projectDto.name());
+        model.setViewName("redirect:/companies");
         return model;
     }
 
@@ -55,7 +55,7 @@ public class ProjectController {
         if (!projectService.deleteById(name)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:companies/" + name);
+        modelAndView.setViewName("redirect:companies");
         return modelAndView;
     }
 
