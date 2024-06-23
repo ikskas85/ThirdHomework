@@ -1,49 +1,47 @@
 package spring.service;
 
 import lombok.RequiredArgsConstructor;
-import spring.dto.CompanyDto;
-import spring.dto.EmployeeDto;
+import org.springframework.transaction.annotation.Transactional;
 import spring.dto.ProjectDto;
-import spring.entities.Company;
-import spring.entities.Project;
 import spring.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
+import static spring.http.mapper.ProjectMapper.*;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
+    @Transactional
     public void save(ProjectDto projectDto) {
-
-        projectRepository.saveAndFlush(createProject(projectDto));
+        projectRepository.saveAndFlush(mappedDtoToProject(projectDto));
     }
 
-    public Optional<Project> readById(String name) {
-        return projectRepository.findById(name);
+    public Optional<ProjectDto> readByName(String name) {
+        return optionalMappedToDto(projectRepository.findById(name));
     }
 
-    public List<Project> readAll() {
-        return projectRepository.findAll();
+    public List<ProjectDto> readAll() {
+        return mappedToDtoList(projectRepository.findAll());
     }
 
-    public void deleteById(ProjectDto projectDto) {
-        projectRepository.delete(createProject(projectDto));
+    @Transactional
+    public boolean deleteById(String name) {
+        return projectRepository.findById(name).map(entity -> {
+            projectRepository.delete(entity);
+            return true;
+        }).orElse(false);
     }
 
+    @Transactional
     public void update(ProjectDto projectDto) {
-        projectRepository.saveAndFlush(createProject(projectDto));
+        projectRepository.saveAndFlush(mappedDtoToProject(projectDto));
     }
 
 
-    private Project createProject(ProjectDto projectDto) {
-        return Project.builder()
-                .name(projectDto.name())
-                .startDate(projectDto.date())
-                .build();
-    }
 }

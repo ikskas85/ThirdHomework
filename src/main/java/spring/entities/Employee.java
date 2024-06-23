@@ -11,14 +11,13 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"companies", "employeeProjects"})
+@ToString(exclude = {"company", "employeeProjects"})
 @EqualsAndHashCode(of = "id")
 @Entity
 @Builder
 @Table(name = "employs")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     @Column(name = "first_name")
     private String firstName;

@@ -2,48 +2,59 @@ package spring.http.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import spring.dto.CompanyDto;
 import spring.service.CompanyService;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/companies")
 public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("company/{id}")
-    public String companyById(@PathVariable("id") Integer id) {
-        return companyService.readById(id).isPresent() ?
-                companyService.readById(id).get().toString() : "Unknown Company";
+    @GetMapping("/{id}")
+    public String findById(@PathVariable("id") Integer id) {
+        return companyService.readById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND))
+                .toString();
     }
 
-    @GetMapping("company/all")
-    public String companyAll() {
+    @GetMapping
+    public String findAll() {
         return companyService.readAll().toString();
     }
 
-    @PutMapping("/update-company")
-    public ModelAndView updateCompany(@RequestParam String name,
-                                      @RequestParam Integer id,
-                                      ModelAndView model) {
-        companyService.update(create(id, name));
-        model.addObject(create(id, name));
-        model.setViewName("redirect:/company/" + id);
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public ModelAndView create(CompanyDto companyDto,
+                               ModelAndView modelAndView) {
+        companyService.save(companyDto);
+        modelAndView.setViewName("redirect:/companies/" + companyDto.id());
+        return modelAndView;
+    }
+
+
+    @PutMapping
+    public ModelAndView update(CompanyDto companyDto,
+                               ModelAndView model) {
+        companyService.update(companyDto);
+        model.setViewName("redirect:/companies/" + companyDto.id());
         return model;
     }
 
-    private CompanyDto create(Integer id, String name) {
-        return new CompanyDto(id, name);
-    }
 
-    @DeleteMapping("/delete-company")
-    public ModelAndView deleteCompany(ModelAndView modelAndView,
-                                      @RequestParam("id") int id,
-                                      @RequestParam(value = "name", required = false) String name) {
-        companyService.deleteById(create(id, name));
-        modelAndView.addObject(create(id, name));
-        modelAndView.setViewName("redirect:/company/" + id);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
+    public ModelAndView delete(ModelAndView modelAndView,
+                               @PathVariable("id") Integer id) {
+        if (!companyService.deleteById(id)) {
+            throw new ResponseStatusException(NOT_FOUND);
+        }
+        modelAndView.setViewName("redirect:companies/" + id);
         return modelAndView;
     }
 }

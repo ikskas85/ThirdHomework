@@ -1,9 +1,6 @@
 package spring.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ import java.util.List;
 public class Project {
     @Id
     private String name;
+    @Column(name = "startdate")
     private LocalDate startDate;
 
 

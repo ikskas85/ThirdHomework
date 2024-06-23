@@ -1,11 +1,15 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ASTON
-    password: test
+    password: Artur9983
     driver-class-name: org.postgresql.Driver
     username: postgres
   jpa:
     show-sql: on
+  mvc:
+    view:
+      suffix: src/main/resources/templates
+      prefix: .jsp
 logging:
   level:
     root: warn

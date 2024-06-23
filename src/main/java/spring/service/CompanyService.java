@@ -1,49 +1,46 @@
 package spring.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.dto.CompanyDto;
-import spring.entities.Company;
 import spring.repository.CompanyRepository;
 
 import java.util.List;
 import java.util.Optional;
 
+import static spring.http.mapper.CompanyMapper.*;
+
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
+    @Transactional
     public void save(CompanyDto companyDto) {
-        companyRepository.saveAndFlush(createCompany(companyDto));
+        companyRepository.saveAndFlush(mappedDtoToCompany(companyDto));
     }
 
-    public Optional<Company> readById(Integer id) {
-        return companyRepository.findById(id);
+    public Optional<CompanyDto> readById(Integer id) {
+        return optionalMappedCompanyToDto(companyRepository.findById(id));
     }
 
-    public List<Company> readAll() {
-        return companyRepository.findAll();
+    public List<CompanyDto> readAll() {
+        return mappedToDtoList(companyRepository.findAll());
     }
 
-    public void deleteById(CompanyDto companyDto) {
-        companyRepository.delete(createCompany(companyDto));
+    @Transactional
+    public boolean deleteById(Integer id) {
+        return companyRepository.findById(id).map(entity -> {
+            companyRepository.delete(entity);
+            return true;
+        }).orElse(false);
     }
 
+    @Transactional
     public void update(CompanyDto companyDto) {
-        companyRepository.saveAndFlush(createCompany(companyDto));
-    }
-
-
-    private Company createCompany(CompanyDto companyDto) {
-        return Company.builder()
-                .companyName(companyDto.name())
-                .id(companyDto.id())
-                .build();
+        companyRepository.saveAndFlush(mappedDtoToCompany(companyDto));
     }
 }

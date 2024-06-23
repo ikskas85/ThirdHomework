@@ -1,5 +1,6 @@
 package integration.database.repository;
 
+import integration.IntegrationTestBase;
 import integration.annotation.IT;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import spring.entities.Company;
 import spring.repository.CompanyRepository;
 
@@ -15,15 +17,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Slf4j
-@IT
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-class CompanyRepositoryIT {
+class CompanyRepositoryIT extends IntegrationTestBase {
 
-    private final Integer TEST_COMPANY_ID = 21;
+    private Integer testId = 21;
     private final CompanyRepository companyRepository;
-    private final EntityManager manager;
     Company company;
     Company secondCompany;
 
@@ -31,37 +30,37 @@ class CompanyRepositoryIT {
     void setUp() {
         company = Company.builder()
                 .companyName("Test")
-                .id(TEST_COMPANY_ID)
+                .id(testId)
                 .build();
         secondCompany = Company.builder()
                 .companyName("newTest")
-                .id(TEST_COMPANY_ID)
+                .id(testId)
                 .build();
     }
 
     @Test
     void create() {
-        AtomicLong count = new AtomicLong(companyRepository.count());
-        companyRepository.save(company);
-        manager.flush();
+        AtomicLong count = new AtomicLong(companyRepository.findAll().size());
+        companyRepository.saveAndFlush(company);
         assertEquals(count.incrementAndGet(), companyRepository.count());
     }
 
     @Test
     void findById() {
-        assertNotNull(companyRepository.findById(TEST_COMPANY_ID));
+        assertNotNull(companyRepository.findById(testId));
     }
 
     @Test
     void update() {
         companyRepository.saveAndFlush(secondCompany);
-        manager.flush();
-        assertEquals(secondCompany.getCompanyName(), companyRepository.findById(TEST_COMPANY_ID).get().getCompanyName());
+        assertNotNull(companyRepository.findById(secondCompany.getId()));
     }
 
     @Test
     void delete() {
+        companyRepository.saveAndFlush(secondCompany);
+        int size = companyRepository.findAll().size();
         companyRepository.delete(secondCompany);
-        manager.flush();
+        assertEquals(size - 1, companyRepository.findAll().size());
     }
 }

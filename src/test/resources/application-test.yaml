@@ -3,7 +3,5 @@ logging:
     root: warn
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ASTON
-    password: Artur9983
-    driver-class-name: org.postgresql.Driver
-    username: postgres
+    username: test
+    password: test
