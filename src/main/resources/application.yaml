@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ASTON
+    password: test
     driver-class-name: org.postgresql.Driver
     username: postgres
   jpa:
