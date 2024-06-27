@@ -33,5 +33,4 @@ public class Employee {
     @Builder.Default
     @OneToMany(mappedBy = "employee")
     private final List<EmployeeProject> employeeProjects = new ArrayList<>();
-
 }
