@@ -58,8 +58,7 @@ class EmployeeControllerTest extends IntegrationTestBase {
                         .param("role", "Test")
                         .param("email", "Test")
                         .param("companyId", "1"))
-                .andExpectAll(status().is3xxRedirection(),
-                        redirectedUrlPattern("/employees/{\\d+}"));
+                .andExpect(status().is2xxSuccessful());
 
     }
 

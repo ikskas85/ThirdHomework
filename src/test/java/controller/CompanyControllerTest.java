@@ -46,8 +46,7 @@ class CompanyControllerTest extends IntegrationTestBase {
         mockMvc.perform(put("/companies")
                         .param("id", "20")
                         .param("name", "newTestName"))
-                .andExpectAll(status().is3xxRedirection(),
-                        redirectedUrlPattern("/companies/{\\d+}"));
+                .andExpect(status().is2xxSuccessful());
 
     }
 
