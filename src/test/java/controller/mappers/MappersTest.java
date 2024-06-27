@@ -30,12 +30,9 @@ class MappersTest {
     void testCompanyMappers() {
         CompanyDto companyDto = new CompanyDto(2, "test");
         Company company = mappedDtoToCompany(companyDto);
-
         assertEquals(company.getCompanyName(), companyDto.name());
         assertEquals(company.getId(), companyDto.id());
-
         assertEquals(mappedCompanyToDto(company), companyDto);
-
         assertEquals(optionalMappedCompanyToDto(
                         Optional.of(company)),
                 Optional.of(companyDto));
@@ -51,12 +48,9 @@ class MappersTest {
                 "test",
                 2);
         Employee employee = mappedDtoToEmployee(employeeDto);
-
         assertEquals(employee.getId(), employeeDto.id());
         assertEquals(employee.getFirstName(), employeeDto.firstName());
-
         assertEquals(mappedToDto(employee), employeeDto);
-
         assertEquals(EmployeesMapper.optionalMappedToDto(
                         Optional.of(employee)),
                 Optional.of(employeeDto));
@@ -68,12 +62,9 @@ class MappersTest {
                 "Test",
                 LocalDate.of(2000, 1, 1));
         Project project = mappedDtoToProject(projectDto);
-
         assertEquals(project.getName(), projectDto.name());
         assertEquals(project.getStartDate(), projectDto.date());
-
         assertEquals(ProjectMapper.mappedToDto(project), projectDto);
-
         assertEquals(optionalMappedToDto(
                         Optional.of(project)),
                 Optional.of(projectDto));
