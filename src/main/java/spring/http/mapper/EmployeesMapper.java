@@ -30,7 +30,6 @@ public interface EmployeesMapper {
                 .findFirst();
     }
 
-
     static Employee mappedDtoToEmployee(EmployeeDto employeeDto) {
         Company company = Company.builder()
                 .id(employeeDto.companyId())

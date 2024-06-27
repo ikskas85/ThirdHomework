@@ -1,9 +1,9 @@
 package spring.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 import spring.dto.ProjectDto;
 import spring.service.ProjectService;
 
@@ -31,32 +31,27 @@ public class ProjectController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ModelAndView create(ProjectDto projectDto,
-                               ModelAndView modelAndView) {
+    public String create(ProjectDto projectDto,
+                         Model model) {
         projectService.save(projectDto);
-        modelAndView.setViewName("redirect:/companies/" + projectDto.name());
-        return modelAndView;
+        model.addAttribute(projectDto.name());
+        return "redirect:/projects/" + projectDto.name();
     }
-
 
     @PutMapping
-    public ModelAndView update(ProjectDto projectDto,
-                               ModelAndView model) {
+    public String update(ProjectDto projectDto,
+                         Model model) {
         projectService.update(projectDto);
-        model.setViewName("redirect:/companies");
-        return model;
+        model.addAttribute(projectDto.name());
+        return "redirect:/projects/" + projectDto.name();
     }
-
 
     @DeleteMapping("/{name}")
     @ResponseStatus(NO_CONTENT)
-    public ModelAndView delete(ModelAndView modelAndView,
-                               @PathVariable("name") String name) {
+    public String delete(@PathVariable("name") String name) {
         if (!projectService.deleteById(name)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:companies");
-        return modelAndView;
+        return "redirect:projects";
     }
-
 }

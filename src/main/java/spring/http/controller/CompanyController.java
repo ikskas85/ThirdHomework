@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 import spring.dto.CompanyDto;
 import spring.service.CompanyService;
 
@@ -31,31 +30,27 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ModelAndView create(CompanyDto companyDto,
-                               ModelAndView modelAndView) {
+    public String create(CompanyDto companyDto,
+                         Model model) {
         companyService.save(companyDto);
-        modelAndView.setViewName("redirect:/companies/" + companyDto.id());
-        return modelAndView;
+        model.addAttribute(companyDto.id());
+        return "redirect:/companies/" + companyDto.id();
     }
-
 
     @PutMapping
-    public ModelAndView update(CompanyDto companyDto,
-                               ModelAndView model) {
+    public String update(CompanyDto companyDto,
+                         Model model) {
         companyService.update(companyDto);
-        model.setViewName("redirect:/companies/" + companyDto.id());
-        return model;
+        model.addAttribute(companyDto.id());
+        return "redirect:/companies/" + companyDto.id();
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public ModelAndView delete(ModelAndView modelAndView,
-                               @PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) {
         if (!companyService.deleteById(id)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:/companies");
-        return modelAndView;
+        return "redirect:/companies";
     }
 }

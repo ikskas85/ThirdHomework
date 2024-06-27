@@ -13,6 +13,8 @@ spring:
       prefix: .jsp
     format:
       date: iso
+  thymeleaf:
+    enabled: false
 logging:
   level:
     root: warn

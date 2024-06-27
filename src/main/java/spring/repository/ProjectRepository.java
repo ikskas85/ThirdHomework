@@ -5,5 +5,4 @@ import spring.entities.Project;
 
 
 public interface ProjectRepository extends JpaRepository<Project, String> {
-
 }

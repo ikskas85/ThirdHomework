@@ -35,6 +35,3 @@ public class Employee {
     private final List<EmployeeProject> employeeProjects = new ArrayList<>();
 
 }
-
-
-

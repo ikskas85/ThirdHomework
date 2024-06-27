@@ -5,6 +5,4 @@ import spring.entities.Company;
 
 
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-
-
 }

@@ -2,6 +2,7 @@ package spring.http.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,31 +35,27 @@ public class EmployeeController {
     @PostMapping("")
     @Transactional
     @ResponseStatus(CREATED)
-    public ModelAndView create(EmployeeDto employeeDto,
-                               ModelAndView modelAndView) {
+    public String create(EmployeeDto employeeDto,
+                         Model model) {
         employeeService.save(employeeDto);
-        modelAndView.setViewName("redirect:/employees/" + employeeDto.id());
-        return modelAndView;
+        model.addAttribute(employeeDto.id());
+        return "redirect:/employees/" + employeeDto.id();
     }
-
 
     @PutMapping
-    public ModelAndView update(EmployeeDto employeeDto,
-                               ModelAndView model) {
+    public String update(EmployeeDto employeeDto,
+                         Model model) {
         employeeService.update(employeeDto);
-        model.setViewName("redirect:/employees/" + employeeDto.id());
-        return model;
+        model.addAttribute(employeeDto.id());
+        return "redirect:/employees/" + employeeDto.id();
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public ModelAndView delete(ModelAndView modelAndView,
-                               @PathVariable("id") UUID uuid) {
+    public String delete(@PathVariable("id") UUID uuid) {
         if (!employeeService.deleteById(uuid)) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        modelAndView.setViewName("redirect:/employees");
-        return modelAndView;
+        return "redirect:/employees";
     }
 }
